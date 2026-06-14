@@ -647,6 +647,33 @@ body {
     newGameBtn.textContent = '🔄 Nueva Partida';
     wrapper.appendChild(newGameBtn);
 
+    // D-pad for mobile
+    const dpad = document.createElement('div');
+    dpad.style.cssText = 'display:grid;grid-template-columns:60px 60px 60px;grid-template-rows:60px 60px 60px;gap:6px;margin-top:16px;justify-items:center;';
+    const dirs = [
+      {col:2,row:1,dir:'up',label:'⬆'},
+      {col:1,row:2,dir:'left',label:'⬅'},
+      {col:3,row:2,dir:'right',label:'➡'},
+      {col:2,row:3,dir:'down',label:'⬇'},
+    ];
+    const padBtns = {};
+    dirs.forEach(({col,row,dir,label})=>{
+      const b=document.createElement('button');
+      b.textContent=label;
+      b.style.cssText=`grid-column:${col};grid-row:${row};width:56px;height:56px;border-radius:14px;border:2px solid #9333ea;background:#2e1065;color:#e0b0ff;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 0 12px rgba(147,51,234,0.4);transition:all 0.1s;-webkit-tap-highlight-color:transparent;user-select:none;`;
+      b.addEventListener('pointerdown',(e)=>{e.preventDefault();move(dir);});
+      b.addEventListener('touchstart',(e)=>{e.preventDefault();move(dir);});
+      dpad.appendChild(b);
+      padBtns[dir]=b;
+    });
+    wrapper.appendChild(dpad);
+
+    // Instructions
+    const instr = document.createElement('p');
+    instr.style.cssText = 'color:#a78bfa;font-size:0.8rem;margin-top:10px;text-align:center;';
+    instr.textContent = '⌨️ Flechas del teclado | 👆 Desliza | 👇 Botones';
+    wrapper.appendChild(instr);
+
     const tileLayer = document.createElement('div');
     tileLayer.style.cssText = 'position:absolute; inset:0; z-index:2; pointer-events:none;';
     boardDiv.appendChild(tileLayer);
