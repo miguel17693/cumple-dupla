@@ -954,7 +954,7 @@ function initWordle(container, onWinCallback) {
   }
 
   function destroy() { if(destroyed) return; destroyed=true; inputEnabled=false; gameOver=true; document.removeEventListener('keydown',handleKeyDown); if(styleEl) styleEl.remove(); container.innerHTML=''; }
-  function init() { targetWord=WORDS[Math.floor(Math.random()*WORDS.length)]; buildUI(); document.addEventListener('keydown',handleKeyDown); }
+  function init() { targetWord='DUPLA'; buildUI(); document.addEventListener('keydown',handleKeyDown); }
   init();
   return {destroy};
 }
