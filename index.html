@@ -581,6 +581,12 @@ body {
         if(round>=ROUNDS_TO_WIN){
           statusEl.textContent='🎉 ¡GANASTE!';
           msgEl.textContent='✨ ¡Perfecto! ✨';
+          skipBtn.textContent = 'Siguiente Juego →';
+          skipBtn.style.display = 'block';
+          skipBtn.style.background = '#a21caf';
+          skipBtn.style.color = '#fff';
+          skipBtn.style.fontSize = '1rem';
+          skipBtn.style.padding = '12px 28px';
           setTimeout(()=>{if(!destroyed&&onWinCallback) onWinCallback();},800);
           return;
         }
@@ -597,6 +603,24 @@ body {
       playerStep=0;
       setTimeout(()=>showSequence(),600);
     }
+
+    // Fallback: skip button (hidden, shown if stuck)
+    const skipBtn = document.createElement('button');
+    skipBtn.textContent = 'Saltar →';
+    skipBtn.style.cssText = 'margin-top:14px;padding:10px 24px;border-radius:25px;border:1px solid #9333ea;background:transparent;color:#a78bfa;font-size:0.9rem;cursor:pointer;display:none;';
+    skipBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (!destroyed && onWinCallback) {
+        destroyed = true;
+        onWinCallback();
+        // Fallback: force navigation after 500ms if callback didn't work
+        setTimeout(() => { if (typeof window.goToGame === 'function') window.goToGame(1); }, 500);
+      }
+    });
+    wrapper.appendChild(skipBtn);
+
+    // Show skip button after 30 seconds (in case auto-advance fails)
+    setTimeout(() => { if (!destroyed && round < ROUNDS_TO_WIN) skipBtn.style.display = 'block'; }, 30000);
 
     startRound();
 
