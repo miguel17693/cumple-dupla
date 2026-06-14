@@ -480,7 +480,7 @@ body {
       { hex:'#3b82f6', glow:'#60a5fa', freq:660 },
     ];
     const ROUNDS_TO_WIN = 5;
-    let sequence=[], playerStep=0, round=0, showing=false, destroyed=false, audioCtx=null;
+    let sequence=[], playerStep=0, round=0, showing=false, destroyed=false, audioCtx=null, inputLocked=false;
 
     function beep(f) {
       try {
@@ -516,9 +516,11 @@ body {
       btn.textContent='';
       btn.addEventListener('pointerdown',(e)=>{
         e.preventDefault();
-        if(showing||destroyed) return;
+        if(showing||destroyed||inputLocked) return;
+        inputLocked=true;
         lightUp(i,350); beep(c.freq);
         checkPlayer(i);
+        setTimeout(()=>{inputLocked=false;},300);
       });
       board.appendChild(btn); btns.push(btn);
     });
@@ -553,10 +555,12 @@ body {
       showing=true; statusEl.textContent='👀 Observa...'; msgEl.textContent='';
       for(let i=0;i<sequence.length;i++){
         if(destroyed) return;
-        await new Promise(r=>setTimeout(r,450));
-        lightUp(sequence[i],400); beep(COLORS[sequence[i]].freq);
-        await new Promise(r=>setTimeout(r,300));
+        await new Promise(r=>setTimeout(r,350));
+        lightUp(sequence[i],350);
+        beep(COLORS[sequence[i]].freq);
+        await new Promise(r=>setTimeout(r,400));
       }
+      await new Promise(r=>setTimeout(r,300));
       showing=false; statusEl.textContent='🎯 ¡Tu turno!'; playerStep=0;
     }
 
