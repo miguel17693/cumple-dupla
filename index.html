@@ -927,7 +927,7 @@ function initRiddlesGame(container, onWinCallback) {
     buildProgressBars();
 
     // Confetti!
-    confetti({ particleCount: 120, spread: 100, origin: { y: 0.6 } });
+    try { if (typeof confetti === 'function') confetti({ particleCount: 120, spread: 100, origin: { y: 0.6 } }); } catch(e) {}
 
     // Animate puzzle piece
     if (gameIndex < 4) {
@@ -1000,14 +1000,15 @@ function initRiddlesGame(container, onWinCallback) {
     // Show final message
     setTimeout(() => {
       document.getElementById('final-message').classList.add('show');
-      // Epic confetti burst
-      const duration = 3000;
-      const end = Date.now() + duration;
-      (function frame() {
-        confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#9333ea','#ec4899','#fbbf24'] });
-        confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#9333ea','#ec4899','#fbbf24'] });
-        if (Date.now() < end) requestAnimationFrame(frame);
-      }());
+      try { if (typeof confetti === 'function') {
+        const duration = 3000;
+        const end = Date.now() + duration;
+        (function frame() {
+          confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#9333ea','#ec4899','#fbbf24'] });
+          confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#9333ea','#ec4899','#fbbf24'] });
+          if (Date.now() < end) requestAnimationFrame(frame);
+        }());
+      } } catch(e) {}
     }, 2000);
   }
 
