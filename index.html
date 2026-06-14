@@ -525,7 +525,7 @@ body {
 
     const instr=document.createElement('p');
     instr.style.cssText='color:#a78bfa;font-size:0.85rem;margin-top:16px;';
-    instr.textContent='Toca los colores en el mismo orden · '+ROUNDS_TO_WIN+' rondas para ganar';
+    instr.textContent = 'Toca los colores en el mismo orden · Empieza con 3, +1 cada ronda · ' + ROUNDS_TO_WIN + ' rondas para ganar';
     wrapper.appendChild(instr);
 
     const msgEl=document.createElement('p');
@@ -586,7 +586,9 @@ body {
     }
 
     function startRound(){
-      sequence.push(Math.floor(Math.random()*4));
+      const length = 3 + round; // round 0 = 3 colors, round 1 = 4, etc.
+      sequence = [];
+      for(let i=0;i<length;i++) sequence.push(Math.floor(Math.random()*4));
       playerStep=0;
       setTimeout(()=>showSequence(),600);
     }
