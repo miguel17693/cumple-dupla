@@ -977,6 +977,7 @@ function initTriviaGame(container, onWinCallback) {
   container.innerHTML='';
   const wrapper=document.createElement('div');
   wrapper.style.cssText='max-width:450px;margin:0 auto;';
+  container.appendChild(wrapper);
 
   function renderQuestion() {
     if(current>=selected.length) {
