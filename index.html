@@ -707,7 +707,14 @@ function initWordle(container, onWinCallback) {
     await animateRow(tiles[currentRow],colors);
     updateKeyboardColors(guess,colors);
     if(colors.every(c=>c==='green')) {
-      gameOver=true; showMessage('🎉 ¡CORRECTO!'); setTimeout(()=>{if(!destroyed&&onWinCallback) onWinCallback();},600);
+      gameOver=true; showMessage('🎉 ¡CORRECTO!');
+      // Show skip button
+      const skipW = document.createElement('button');
+      skipW.textContent='Siguiente →';
+      skipW.style.cssText='margin-top:12px;padding:12px 28px;border-radius:25px;border:none;background:#a21caf;color:#fff;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 0 15px #c026d3;display:block;width:100%;';
+      skipW.addEventListener('click',(e)=>{e.preventDefault();if(!destroyed){destroyed=true;if(onWinCallback)onWinCallback();setTimeout(()=>{if(typeof window.goToGame==='function')window.goToGame(2);},500);}});
+      container.appendChild(skipW);
+      setTimeout(()=>{if(!destroyed&&onWinCallback) onWinCallback();},600);
       return;
     }
     currentRow++; currentTile=0;
@@ -774,7 +781,12 @@ function initRiddlesGame(container, onWinCallback) {
 
   function renderRiddle(){
     if(current>=riddles.length){
-      wrapper.innerHTML='<div class="quiz-card" style="font-size:1.4rem;color:#fbbf24;font-weight:700;padding:3rem;text-align:center">✨ ¡Los 3 acertijos resueltos! ✨</div>';
+      wrapper.innerHTML='<div class="quiz-card" style="font-size:1.4rem;color:#fbbf24;font-weight:700;padding:2rem 2rem 1rem;text-align:center">✨ ¡Los 3 acertijos resueltos! ✨</div>';
+      const skipR = document.createElement('button');
+      skipR.textContent='Siguiente →';
+      skipR.style.cssText='margin-top:14px;padding:12px 28px;border-radius:25px;border:none;background:#a21caf;color:#fff;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 0 15px #c026d3;display:block;width:100%;';
+      skipR.addEventListener('click',(e)=>{e.preventDefault();if(!destroyed){destroyed=true;if(onWinCallback)onWinCallback();setTimeout(()=>{if(typeof window.goToGame==='function')window.goToGame(3);},500);}});
+      wrapper.appendChild(skipR);
       setTimeout(()=>{ if(!destroyed&&onWinCallback) onWinCallback(); },1200);
       return;
     }
@@ -877,7 +889,14 @@ function initRiddlesGame(container, onWinCallback) {
         first.classList.add('matched'); second.classList.add('matched');
         matched++; matchedEl.textContent=`Parejas: ${matched}/6`;
         first=null; second=null; locked=false;
-        if(matched===6) { setTimeout(()=>{ if(!destroyed&&onWinCallback) onWinCallback(); },400); }
+        if(matched===6) {
+        const skipM = document.createElement('button');
+        skipM.textContent='Siguiente →';
+        skipM.style.cssText='margin-top:16px;padding:12px 28px;border-radius:25px;border:none;background:#a21caf;color:#fff;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 0 15px #c026d3;display:block;width:100%;';
+        skipM.addEventListener('click',(e)=>{e.preventDefault();if(!destroyed){destroyed=true;if(onWinCallback)onWinCallback();setTimeout(()=>{if(typeof window.showFinal==='function')window.showFinal();},500);}});
+        wrapper.appendChild(skipM);
+        setTimeout(()=>{ if(!destroyed&&onWinCallback) onWinCallback(); },400);
+      }
       } else {
         setTimeout(()=>{
           if(!destroyed) { first.classList.remove('flipped'); second.classList.remove('flipped'); }
