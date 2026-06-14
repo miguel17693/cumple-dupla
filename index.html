@@ -587,7 +587,7 @@ body {
           skipBtn.style.color = '#fff';
           skipBtn.style.fontSize = '1rem';
           skipBtn.style.padding = '12px 28px';
-          setTimeout(()=>{if(!destroyed&&onWinCallback) onWinCallback();},800);
+          setTimeout(()=>{console.log('Simon win! destroyed='+destroyed+' cb='+!!onWinCallback); if(!destroyed&&onWinCallback) onWinCallback();},800);
           return;
         }
         msgEl.textContent='✅ ¡Bien! Sigue así...';
@@ -945,6 +945,7 @@ function initRiddlesGame(container, onWinCallback) {
   }
 
   function onGameWin(gameIndex) {
+    console.log('onGameWin called! index='+gameIndex+' completed='+[...completedGames]);
     if (completedGames.has(gameIndex)) return;
     completedGames.add(gameIndex);
     saveProgress();
